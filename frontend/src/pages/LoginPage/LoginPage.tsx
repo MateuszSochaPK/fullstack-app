@@ -12,6 +12,13 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
+  type ApiError = {
+    response?: {
+      data?: string | { message?: string };
+    };
+    message?: string;
+  };
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,22 +27,31 @@ const LoginPage: React.FC = () => {
       const response = await authApi.login({ email, password });
       login(response.data.token);
       navigate("/transactions");
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      if (error.response && error.response.data) {
-        setError(error.response.data); // wiadomość z backendu
+    } catch (error) {
+      const apiError = error as ApiError;
+      if (typeof apiError.response?.data === "string") {
+        setError(apiError.response.data);
+      } else if (
+          typeof apiError.response?.data === "object" &&
+          apiError.response.data?.message
+      ) {
+        setError(apiError.response.data.message);
+      } else if (apiError.message) {
+        setError(apiError.message);
       } else {
         setError("Wystąpił nieznany błąd podczas logowania.");
       }
     }
   };
 
+
+
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>Logowanie</h2>
       <form onSubmit={handleLogin} className={styles.form}>
         <div className={styles.formGroup}>
-          <label>Email:</label>
+          <label><input type="text"/>Email:</label>
           <input
             type="email"
             value={email}
@@ -46,7 +62,7 @@ const LoginPage: React.FC = () => {
           {error && <ErrorMessage message={error} />}
         </div>
         <div className={styles.formGroup}>
-          <label>Hasło:</label>
+          <label><input type="text" />Hasło:</label>
           <input
             type="password"
             value={password}

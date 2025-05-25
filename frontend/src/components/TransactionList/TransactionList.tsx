@@ -38,7 +38,7 @@ const TransactionList: React.FC = () => {
     `;
     try {
       const response = await graphqlClient(query);
-      const transactionsData = response?.data?.transactions || [];
+      const transactionsData = response?.data?.transactions ?? [];
       setTransactions(transactionsData);
     } catch (err) {
       setError("Nie udało się pobrać transakcji." + err);
@@ -160,6 +160,18 @@ const TransactionList: React.FC = () => {
   if (loading) return <p>Ładowanie...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
+  const renderTransactionType = (type: string) => {
+    switch (type) {
+      case "INCOME":
+        return "Przychód";
+      case "EXPENSE":
+        return "Wydatek";
+      default:
+        return "Nieznany typ";
+    }
+  };
+
+
   return (
     <div className={styles["transaction-list"]}>
       <h2>Lista Transakcji</h2>
@@ -181,7 +193,7 @@ const TransactionList: React.FC = () => {
                   <>
                     <input
                       type="number"
-                      value={editValues.amount || ""}
+                      value={editValues.amount ?? ""}
                       onChange={(e) => handleEditChange(e, "amount")}
                     />
                     {editErrors.amount && (
@@ -194,31 +206,31 @@ const TransactionList: React.FC = () => {
               </td>
               <td>
                 {editingTransactionId === transaction.id ? (
-                  <>
-                    <select
-                      value={editValues.type || ""}
-                      onChange={(e) => handleEditChange(e, "type")}
-                    >
-                      <option value="">-- wybierz --</option>
-                      <option value="INCOME">Przychód</option>
-                      <option value="EXPENSE">Wydatek</option>
-                    </select>
-                    {editErrors.type && (
-                      <p className={styles.error}>{editErrors.type}</p>
-                    )}
-                  </>
-                ) : transaction.type === "INCOME" ? (
-                  "Przychód"
+                    <>
+                      <select
+                          value={editValues.type ?? ""}
+                          onChange={(e) => handleEditChange(e, "type")}
+                      >
+                        <option value="">-- wybierz --</option>
+                        <option value="INCOME">Przychód</option>
+                        <option value="EXPENSE">Wydatek</option>
+                      </select>
+                      {editErrors.type && (
+                          <p className={styles.error}>{editErrors.type}</p>
+                      )}
+                    </>
                 ) : (
-                  "Wydatek"
+                    renderTransactionType(transaction.type)
                 )}
               </td>
+
+
               <td>
                 {editingTransactionId === transaction.id ? (
                   <>
                     <input
                       type="text"
-                      value={editValues.tags || ""}
+                      value={editValues.tags ?? ""}
                       onChange={(e) => handleEditChange(e, "tags")}
                     />
                     {editErrors.tags && (
@@ -234,7 +246,7 @@ const TransactionList: React.FC = () => {
                   <>
                     <input
                       type="text"
-                      value={editValues.notes || ""}
+                      value={editValues.notes ?? ""}
                       onChange={(e) => handleEditChange(e, "notes")}
                     />
                     {editErrors.notes && (

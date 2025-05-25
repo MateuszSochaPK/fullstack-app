@@ -64,7 +64,7 @@ const GroupMembersPage: React.FC<Props> = ({ group, onBack }) => {
       fetchMembers();
     } catch (error: any) {
       console.error("Błąd dodawania członka:", error);
-      alert(error.message || "Wystąpił błąd.");
+      alert(error.message ?? "Wystąpił błąd.");
     }
   };
 
@@ -126,11 +126,7 @@ const GroupMembersPage: React.FC<Props> = ({ group, onBack }) => {
         {members.map((member) => (
           <li key={member.id}>
             {member.userEmail}
-            {member.userId === group.ownerId && (
-              <>
-                <span className={styles.adminLabel}>(admin)</span>
-              </>
-            )}
+            {member.userId === group.ownerId && (<span className={styles.adminLabel}>(admin)</span>)}
             {user?.id == group.ownerId && member.userId !== group.ownerId && (
               <button
                 onClick={() => {

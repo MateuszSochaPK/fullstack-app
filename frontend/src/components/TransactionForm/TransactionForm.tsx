@@ -48,7 +48,7 @@ const TransactionForm: React.FC = () => {
       <h2>Dodaj Transakcję</h2>
 
       <div className={styles.formGroup}>
-        <label>Kwota:</label>
+        <label><input type="text" />Kwota:</label>
         <input
           type="number"
           step="0.01"
@@ -69,7 +69,10 @@ const TransactionForm: React.FC = () => {
       </div>
 
       <div className={styles.formGroup}>
-        <label>Typ:</label>
+        <label>
+          <input type="text" /> Typ:
+        </label>
+
         <select
           {...register("type", {
             required: "Typ transakcji jest wymagany",
@@ -88,7 +91,9 @@ const TransactionForm: React.FC = () => {
       </div>
 
       <div className={styles.formGroup}>
-        <label>Tagi:</label>
+        <label>
+          <input type="text" />Tagi:
+        </label>
         <input
           type="text"
           {...register("tags", {
@@ -109,7 +114,7 @@ const TransactionForm: React.FC = () => {
       </div>
 
       <div className={styles.formGroup}>
-        <label>Notatki:</label>
+        <label><input type="text" />Notatki:</label>
         <textarea
           {...register("notes", {
             maxLength: {

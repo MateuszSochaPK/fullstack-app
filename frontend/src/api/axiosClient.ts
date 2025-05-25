@@ -10,10 +10,12 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
-  if (token && token.includes(".")) {
+  if (token?.includes(".")) {
+    config.headers = config.headers || {};
     config.headers.Authorization = `Bearer ${token}`;
   }
-
   return config;
 });
+
+
 export default axiosClient;

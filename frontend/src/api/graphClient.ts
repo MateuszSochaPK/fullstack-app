@@ -30,7 +30,7 @@ const graphqlClient = async (query: string, variables?: any) => {
 
     return response.data;
   } catch (err) {
-    // Obsługa błędu w komponencie
+    console.error(err);
     throw err;
   }
 };

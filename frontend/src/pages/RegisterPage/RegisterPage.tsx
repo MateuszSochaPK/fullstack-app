@@ -41,7 +41,13 @@ const RegisterPage: React.FC = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
+  type RegisterError = {
+    response?: {
+      data?: {
+        errors?: Record<string, string>;
+      };
+    };
+  };
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({}); // Reset błędów
@@ -52,18 +58,14 @@ const RegisterPage: React.FC = () => {
       await authApi.register({ username, email, password });
       alert("Rejestracja udana. Możesz się teraz zalogować.");
       navigate("/login");
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      // Obsługa błędów z backendu
-      if (error.response && error.response.data) {
-        setErrors(
-          error.response.data.errors || {
+    } catch (error) {
+      const registerError = error as RegisterError;
+      // Obsługa błędów z backendu z użyciem optional chaining
+      setErrors(
+          registerError?.response?.data?.errors ?? {
             general: "Błąd rejestracji. Spróbuj ponownie.",
           }
-        );
-      } else {
-        setErrors({ general: "Błąd rejestracji. Spróbuj ponownie." });
-      }
+      );
     }
   };
 
@@ -72,7 +74,7 @@ const RegisterPage: React.FC = () => {
       <h2>Rejestracja</h2>
       <form onSubmit={handleRegister} className={styles.form}>
         <div className={styles.formGroup}>
-          <label>Nazwa użytkownika:</label>
+          <label><input type="text" />Nazwa użytkownika:</label>
           <input
             type="text"
             value={username}
@@ -83,7 +85,7 @@ const RegisterPage: React.FC = () => {
           {errors.username && <ErrorMessage message={errors.username} />}
         </div>
         <div className={styles.formGroup}>
-          <label>Email:</label>
+          <label><input type="text" />Email:</label>
           <input
             type="email"
             value={email}
@@ -94,7 +96,7 @@ const RegisterPage: React.FC = () => {
           {errors.email && <ErrorMessage message={errors.email} />}
         </div>
         <div className={styles.formGroup}>
-          <label>Hasło:</label>
+          <label><input type="text" />Hasło:</label>
           <input
             type="password"
             value={password}
@@ -105,7 +107,7 @@ const RegisterPage: React.FC = () => {
           {errors.password && <ErrorMessage message={errors.password} />}
         </div>
         <div className={styles.formGroup}>
-          <label>Powtórz hasło:</label>
+          <label><input type="text" />Powtórz hasło:</label>
           <input
             type="password"
             value={confirmPassword}

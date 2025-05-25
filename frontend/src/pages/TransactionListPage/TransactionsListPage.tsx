@@ -24,37 +24,36 @@ const TransactionsListPage: React.FC = () => {
   }, []);
 
   return (
-    <div className={styles.container}>
-      <h2>Lista Transakcji</h2>
-      {isLoading ? (
-        <p>Ładowanie...</p>
-      ) : error ? (
-        <p className={styles.error}>{error}</p>
-      ) : (
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Typ</th>
-              <th>Kwota</th>
-              <th>Tagi</th>
-              <th>Notatki</th>
-            </tr>
-          </thead>
-          <tbody>
-            {transactions.map(tx => (
-              <tr key={tx.id}>
-                <td className={tx.type === 'INCOME' ? styles.income : styles.expense}>
-                  {tx.type}
-                </td>
-                <td>{tx.amount} zł</td>
-                <td>{tx.tags ? tx.tags.join(', ') : '-'}</td>
-                <td>{tx.notes || '-'}</td>
+      <div className={styles.container}>
+        <h2>Lista Transakcji</h2>
+        {isLoading && <p>Ładowanie...</p>}
+        {!isLoading && error && <p className={styles.error}>{error}</p>}
+        {!isLoading && !error && (
+            <table className={styles.table}>
+              <thead>
+              <tr>
+                <th>Typ</th>
+                <th>Kwota</th>
+                <th>Tagi</th>
+                <th>Notatki</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
+              </thead>
+              <tbody>
+              {transactions.map(tx => (
+                  <tr key={tx.id}>
+                    <td className={tx.type === 'INCOME' ? styles.income : styles.expense}>
+                      {tx.type}
+                    </td>
+                    <td>{tx.amount} zł</td>
+                    <td>{tx.tags ? tx.tags.join(', ') : '-'}</td>
+                    <td>{tx.notes ?? '-'}</td>
+                  </tr>
+              ))}
+              </tbody>
+            </table>
+        )}
+      </div>
+
   );
 };
 

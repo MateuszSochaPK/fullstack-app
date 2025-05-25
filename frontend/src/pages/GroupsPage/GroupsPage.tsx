@@ -17,8 +17,6 @@ const GroupsPage: React.FC = () => {
   const [groups, setGroups] = useState<Group[]>([]);
   const [newGroupName, setNewGroupName] = useState("");
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
-  // const [showConfirm, setShowConfirm] = useState(false);
-  // const [pendingDeleteId, setPendingDeleteId] = useState<number | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [groupToDelete, setGroupToDelete] = useState<Group | null>(null);
 
@@ -39,19 +37,6 @@ const GroupsPage: React.FC = () => {
     toast.success("Grupa utworzona");
   };
 
-  // const handleDeleteGroup = async (groupId: number) => {
-  //   try {
-  //     await groupsApi.deleteGroup(groupId);
-  //     toast.success("✅ Grupa usunięta.");
-  //     fetchGroups();
-  //     setSelectedGroup(null);
-  //     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  //   } catch (error: unknown) {
-  //     toast.info("Ta grupa posiada powiązania. Czy na pewno chcesz ją usunąć?");
-  //     setPendingDeleteId(groupId);
-  //     setShowConfirm(true);
-  //   }
-  // };
 
   const handleDeleteClick = (group: Group) => {
     setGroupToDelete(group);
@@ -98,23 +83,27 @@ const GroupsPage: React.FC = () => {
 
       <ul className={styles.list}>
         {groups.map((group) => (
-          <li
-            key={group.id}
-            onClick={() => setSelectedGroup(group)}
-            className={styles.groupItem}
-          >
-            {group.name}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDeleteClick(group);
-              }}
-            >
-              Usuń
-            </button>
-          </li>
+            <li key={group.id} className={styles.groupItem}>
+              <button
+                  type="button"
+                  className={styles.groupButton}
+                  onClick={() => setSelectedGroup(group)}
+              >
+                {group.name}
+              </button>
+              <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteClick(group);
+                  }}
+              >
+                Usuń
+              </button>
+            </li>
         ))}
       </ul>
+
 
       <ConfirmModal
         message="Czy na pewno chcesz usunąć tę grupę wraz ze wszystkimi powiązaniami?"
