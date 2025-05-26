@@ -28,14 +28,15 @@ public class UserController {
         return ResponseEntity.ok(userService.register(dto));
     }
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDto dto){
-        try{
-            String token=userService.login(dto);
-            return ResponseEntity.ok(Map.of("token",token));
-        }catch (UsernameNotFoundException | BadCredentialsException ex){
+    public ResponseEntity<Object> login(@RequestBody LoginDto dto) {
+        try {
+            String token = userService.login(dto);
+            return ResponseEntity.ok(Map.of("token", token));
+        } catch (UsernameNotFoundException | BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
         }
     }
+
 }
 
 

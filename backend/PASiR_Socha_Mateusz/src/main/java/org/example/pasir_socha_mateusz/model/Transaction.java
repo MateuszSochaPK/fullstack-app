@@ -44,7 +44,7 @@ public class Transaction {
         this.tags = tags;
         this.notes = notes;
         this.user= user;
-        this.timestamp = timestamp;
+
     }
 
 }

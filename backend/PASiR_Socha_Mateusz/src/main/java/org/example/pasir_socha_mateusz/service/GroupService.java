@@ -47,10 +47,7 @@ public class GroupService {
     }
 
     public void deleteGroup(Long id) {
-//        if (!groupRepository.existsById(id)) {
-//            throw new EntityNotFoundException("Grupa o ID " + id + " nie istnieje.");
-//        }
-//        groupRepository.deleteById(id);
+
         Group group=groupRepository.findById(id)
                 .orElseThrow(()->new EntityNotFoundException("Grupa o ID " + id + " nie istnieje."));
         debtRepository.deleteAll(debtRepository.findByGroupId(id));

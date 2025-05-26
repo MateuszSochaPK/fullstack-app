@@ -36,7 +36,7 @@ jobs:
         working-directory: frontend
         run: |
           npm install
-          npm run dev
+          npm run build
       - name: Cache SonarCloud
         uses: actions/cache@v4
         with:

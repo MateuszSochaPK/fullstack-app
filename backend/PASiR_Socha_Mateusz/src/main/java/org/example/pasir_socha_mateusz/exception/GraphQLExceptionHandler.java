@@ -9,7 +9,7 @@ import org.springframework.graphql.execution.DataFetcherExceptionResolver;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 
 @Component
@@ -21,7 +21,9 @@ public class GraphQLExceptionHandler implements DataFetcherExceptionResolver {
             List<GraphQLError> errors = validationEx.getConstraintViolations().stream()
                     .map(violation -> GraphqlErrorBuilder.newError(env)
                             .message("Błąd walidacji " + violation.getMessage())
-                            .build()).collect(Collectors.toList());
+                            .build())
+                    .toList();
+
 
             return Mono.just(errors);
         }
