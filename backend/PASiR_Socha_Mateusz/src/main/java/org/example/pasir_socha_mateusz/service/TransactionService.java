@@ -8,6 +8,9 @@ import org.example.pasir_socha_mateusz.model.TransactionType;
 import org.example.pasir_socha_mateusz.model.User;
 import org.example.pasir_socha_mateusz.repository.TransactionRepository;
 import org.example.pasir_socha_mateusz.repository.UserRepository;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -82,7 +85,7 @@ public class TransactionService {
             // Jeśli transakcja już nie istnieje (np. równoległe usunięcie)
             throw new EntityNotFoundException("Transakcja " + id + " nie istnieje");
         } catch (DataAccessException ex) {
-            throw new TransactionDeletionException("Błąd bazy danych przy usuwaniu transakcji: " + ex.getMessage());
+            throw new EntityNotFoundException("Błąd bazy danych przy usuwaniu transakcji: " + ex.getMessage());
         }
     }
 
